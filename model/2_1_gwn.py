@@ -135,6 +135,7 @@ class gwn(nn.Module):
         x = F.relu(self.end_conv_1(x))
         x = self.end_conv_2(x)
         x = x.squeeze(-1)
+        x = x.permute(0,2,1)
         return x
     
 
