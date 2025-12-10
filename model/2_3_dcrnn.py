@@ -263,8 +263,9 @@ def sym_adj(adj):
     d_mat_inv_sqrt = sp.diags(d_inv_sqrt)
     return adj.dot(d_mat_inv_sqrt).transpose().dot(d_mat_inv_sqrt).astype(np.float32).todense()
 
-
+# 适用于有向图（非对称结构）
 def asym_adj(adj):
+    #? A' = D^{-1} × A
     adj = sp.coo_matrix(adj)
     rowsum = np.array(adj.sum(1)).flatten()
     d_inv = np.power(rowsum, -1).flatten()
@@ -327,8 +328,8 @@ def main():
     TIMESTEP_IN=12
     TIMESTEP_OUT=6
     device="cpu"
-    mat = np.random.randn(50,50)
-    adj_mx = load_adj(mat, "doubletransition")
+    mat = np.random.randn(50,50) 
+    adj_mx = load_adj(mat, "doubletransition") # {list:2}
     model = DCRNN(device, num_nodes=N_NODE, input_dim=CHANNEL, out_horizon=TIMESTEP_OUT, P=adj_mx)
 
     x = torch.randn(64,12,50,2)
